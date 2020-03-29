@@ -1,0 +1,21 @@
+Test task - ExchangeRatesAPI
+
+Write Java command-line program that retrieves data from exchange rates public API at https://exchangeratesapi.io/.
+
+Input from user:
+- Base currency
+- Target currency
+
+Program output:
+- Current exchange rate for base currency to target currency
+- The lowest base currency rate to target currency in the current month
+- The highest base currency rate to target currency in the current month
+- Provide correct human-readable error message if currency is not supported
+
+Requirements
+- Code should be covered by tests (ideally use jUnit + Mockito)
+- Code should follow best practices like Clean Code by Robert C. Martin: https://dzone.com/articles/clean-code-summary-and-key-points
+- Maven (preferably) or Gradle should be used as building tool
+- Use Docker to deliver application (no additional installations except Docker should be required at host machine). Would be great, but not mandatory, to publish your Docker image to hub.docker.com
+- Upload source code to any public Git repository
+- Using Spring/SpringBoot is recommended, but not mandatory
