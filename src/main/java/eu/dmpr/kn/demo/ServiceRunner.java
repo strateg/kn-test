@@ -21,12 +21,10 @@ public class ServiceRunner implements CommandLineRunner {
         ExchangeRate rate = exchangeService.latest(baseCurrency, targetCurrency);
         Log.info("Exchange rate: {}", rate.toString());
 
-        ExchangeRate rates = exchangeService.lowestRateOfCurrentMonth(baseCurrency, targetCurrency);
-        Log.info("Exchange rates for current month: {}", rates.toString());
+        ExchangeRate lowestRate = exchangeService.lowestRateOfCurrentMonth(baseCurrency, targetCurrency);
+        Log.info("Lowest exchange rate for current month: {}", lowestRate.toString());
 
         ExchangeRate highestRate = exchangeService.highestRateOfCurrentMonth(baseCurrency, targetCurrency);
-        Log.info("Exchange rates for current month: {}", highestRate.toString());
-
-
+        Log.info("Highest exchange rate for current month: {}", highestRate.toString());
     }
 }

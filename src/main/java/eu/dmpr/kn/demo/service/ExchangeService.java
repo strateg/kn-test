@@ -1,20 +1,12 @@
 package eu.dmpr.kn.demo.service;
 
+import static eu.dmpr.kn.demo.model.ExchangeRate.from;
 import static eu.dmpr.kn.demo.utils.AppUtils.transformToDateRatePairs;
-import static java.math.BigDecimal.*;
-import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +18,6 @@ import eu.dmpr.kn.demo.utils.AppUtils;
 import eu.dmpr.kn.demo.utils.Log;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 @Component
 @RequiredArgsConstructor
@@ -39,31 +30,18 @@ public class ExchangeService {
     public ExchangeRate latest(String base, String target) {
         ExchangeRates fetchedRates = clientCallService.getLatestExchangeRate(base, target);
 
-
-        BigDecimal targetRate = fetchedRates.getRates().entrySet().stream()
-                .findFirst()
-                .get()
-                .getValue();
-
-        String date = fetchedRates.getDate();
-
-        return ExchangeRate.builder()
-                .baseCurrency(base)
-                .targetCurrency(target)
-                .rate(targetRate)
-                .date(date)
-                .build();
+        return from(fetchedRates, target);
     }
 
     public ExchangeRate lowestRateOfCurrentMonth(String base, String target) {
-        HistoricalExchangeRates historicalExchangeRates = clientCallService.getHistoricalExchangeRates(base, target);
-        Log.info("Historycal rates: {}", historicalExchangeRates );
+        HistoricalExchangeRates historicalExchangeRates = clientCallService.getHistoricalExchangeRatesForCurrentMonth(base, target);
+        Log.info("Historical rates: {}", historicalExchangeRates );
 
         return reduceRates(base, target, historicalExchangeRates, AppUtils::min);
     }
 
     public ExchangeRate highestRateOfCurrentMonth(String base, String target) {
-        HistoricalExchangeRates historicalExchangeRates = clientCallService.getHistoricalExchangeRates(base, target);
+        HistoricalExchangeRates historicalExchangeRates = clientCallService.getHistoricalExchangeRatesForCurrentMonth(base, target);
 
         return reduceRates(base, target, historicalExchangeRates, AppUtils::max);
     }
@@ -83,6 +61,7 @@ public class ExchangeService {
                 .rate(targetRate)
                 .date(date)
                 .build();
+
         return lowestExchangeRate;
     }
 }

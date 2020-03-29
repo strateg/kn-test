@@ -32,7 +32,7 @@ public class ClientCallService {
     }
 
 
-    HistoricalExchangeRates getHistoricalExchangeRates(String base, String target) {
+    HistoricalExchangeRates getHistoricalExchangeRatesForCurrentMonth(String base, String target) {
         LocalDate todaydate = LocalDate.now();
         LocalDate startAtDate = todaydate.withDayOfMonth(1);
         LocalDate endsAtDate = todaydate.plusMonths(1).minusDays(1);
