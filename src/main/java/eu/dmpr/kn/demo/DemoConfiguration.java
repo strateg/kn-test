@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 import eu.dmpr.kn.demo.adapter.RestAdapter;
-import eu.dmpr.kn.demo.service.ClientCallService;
+import eu.dmpr.kn.demo.service.ExchangeServiceCallinglService;
 
 @ComponentScan
 @Configuration
@@ -17,7 +16,7 @@ public class DemoConfiguration {
     private String BASE_URL;
 
     @Bean
-    public ClientCallService exchangeRestCalls() {
-        return new ClientCallService(new RestAdapter(new RestTemplate()), BASE_URL);
+    public ExchangeServiceCallinglService exchangeRestCalls() {
+        return new ExchangeServiceCallinglService(new RestAdapter(), BASE_URL);
     }
 }

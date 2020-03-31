@@ -31,10 +31,11 @@ public class ErrorResponse {
 
     public static ErrorResponse from(MethodArgumentNotValidException exception) {
         List<String> validationErrors = exception.getBindingResult()
-                                                 .getFieldErrors()
-                                                 .stream()
-                                                 .map(error -> error.getField() + " " + error.getDefaultMessage())
-                                                 .collect(Collectors.toList());
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + " " + error.getDefaultMessage())
+                .collect(Collectors.toList());
+
         return of(validationErrors);
     }
 }

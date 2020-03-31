@@ -9,5 +9,5 @@ public interface RestOperation {
 
     @Nullable
     <T> T getCurrencyData(URI url, Class<T> responseType) throws RestClientException;
-
+    
 }
