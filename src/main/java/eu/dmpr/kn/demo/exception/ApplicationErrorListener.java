@@ -11,7 +11,7 @@ public class ApplicationErrorListener implements
     @Override
     public void onApplicationEvent(ApplicationFailedEvent event) {
         if (event.getException() != null) {
-            Log.error("!!!!!!Looks like something not working as expected so application is stopping!!!!!!", event);
+            Log.error("Looks like something not working as expected so application is stopping!", event);
             event.getApplicationContext().close();
             System.exit(-1);
         }

@@ -9,6 +9,10 @@ public class Log {
         log.info(format, object);
     }
 
+    public static void warn(String format, Object... object){
+        log.warn(format, object);
+    }
+
     public static void error(String format, Object... object){
         log.error(format, object);
     }

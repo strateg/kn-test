@@ -1,17 +1,18 @@
 package eu.dmpr.kn.demo.exception;
 
+import static eu.dmpr.kn.demo.utils.Log.error;
 import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
 import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
 import java.io.IOException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.ExtractingResponseErrorHandler;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Component
-public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
+public class RestTemplateResponseErrorHandler extends ExtractingResponseErrorHandler {
 
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
@@ -22,17 +23,12 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        HttpStatus statusCode = response.getStatusCode();
-
-        if (statusCode.series() == HttpStatus.Series.SERVER_ERROR) {
-            // handle SERVER_ERROR
-        } else if (statusCode.series() == HttpStatus.Series.CLIENT_ERROR) {
-            // handle CLIENT_ERROR
-            switch (statusCode) {
-                case NOT_FOUND:     throw new NotFoundException();
-                case BAD_REQUEST:   throw new BadRequestException();
-                default: throw new RuntimeException(statusCode.toString());
-            }
+        try {
+            super.handleError(response);
+        } catch (HttpClientErrorException e) {
+            error(e.getLocalizedMessage());
+        } catch (Exception e) {
+            error(e.getMessage());
         }
     }
 }

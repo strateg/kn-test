@@ -19,7 +19,7 @@ public class ExchangeServiceCallinglService {
     private RestOperation restOperation;
     private String BASE_URL;
 
-    ExchangeRates getLatestExchangeRate(String base, String target) {
+    public ExchangeRates getLatestExchangeRate(String base, String target) {
         URI targetUrl = UriComponentsBuilder
                 .fromUriString(BASE_URL)
                 .path("/latest")
@@ -34,10 +34,7 @@ public class ExchangeServiceCallinglService {
     }
 
 
-    HistoricalExchangeRates getHistoricalExchangeRatesForCurrentMonth(String base, String target) {
-        LocalDate today = LocalDate.now();
-        LocalDate startAtDate = today.withDayOfMonth(1);
-        LocalDate endsAtDate = today.plusMonths(1).minusDays(1);
+    public HistoricalExchangeRates getHistoricalExchangeRatesForSpecifiedPeriod(String base, String target, LocalDate startAtDate, LocalDate endsAtDate) {
         URI targetUrl = UriComponentsBuilder.fromUriString(BASE_URL)
                 .path("/history")
                 .queryParam("base", base)
@@ -49,6 +46,11 @@ public class ExchangeServiceCallinglService {
                 .toUri();
 
         Log.info("Requesting historical exchange rates data for pair ({}/{}) and for period from {} to {}", base, target, startAtDate, endsAtDate);
-        return restOperation.getCurrencyData(targetUrl, HistoricalExchangeRates.class);
+        HistoricalExchangeRates currencyData = restOperation.getCurrencyData(targetUrl, HistoricalExchangeRates.class);
+
+        currencyData.setStartDate(startAtDate.toString());
+        currencyData.setEndDate(endsAtDate.toString());
+
+        return currencyData;
     }
 }

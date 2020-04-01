@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import eu.dmpr.kn.demo.exception.NoRatesFoundException;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,7 +23,7 @@ public class ExchangeRate {
         Map.Entry<String, BigDecimal> rate = rates.getRates().entrySet().stream()
                 .filter(entry -> targetCurrency.compareTo(entry.getKey()) == 0)
                 .findFirst()
-                .get();
+                .orElseThrow(() -> new NoRatesFoundException());
 
         return ExchangeRate.builder()
                 .baseCurrency(rates.getBase())
