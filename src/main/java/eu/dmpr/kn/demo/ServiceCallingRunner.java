@@ -30,13 +30,13 @@ public class ServiceCallingRunner implements CommandLineRunner {
             String targetCurrency = args[1];
 
             ExchangeRate rate = demoExchangeService.latest(baseCurrency, targetCurrency);
-            Log.warn("Exchange rate: {}", rate.toString());
+            Log.warn("Latest exchange rate for pair {}/{} is : {}", baseCurrency, targetCurrency, rate.toString());
 
             ExchangeRate lowestRate = demoExchangeService.lowestRateOfCurrentMonth(baseCurrency, targetCurrency);
-            Log.warn("Lowest exchange rate for current month: {}", lowestRate.toString());
+            Log.warn("Lowest exchange rate for current month for pair {}/{} is : {}", baseCurrency, targetCurrency, lowestRate.toString());
 
             ExchangeRate highestRate = demoExchangeService.highestRateOfCurrentMonth(baseCurrency, targetCurrency);
-            Log.warn("Highest exchange rate for current month: {}", highestRate.toString());
+            Log.warn("Highest exchange rate for current month for pair {}/{} is : {}", baseCurrency, targetCurrency, highestRate.toString());
 
         } catch (IndexOutOfBoundsException e) {
             error("Check application arguments! Example: USD EUR");
